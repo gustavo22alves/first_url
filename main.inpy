@@ -1,0 +1,26 @@
+from flask import Flask
+from flask_ngrok import run_with_ngrok
+
+app = Flask(__name__)
+@app.route('/index')
+def home():
+  return 'Hello World'
+
+run_with_ngrok(app)
+app.run()
+
+from fastapi import FastAPI
+import nest_asyncio
+from pyngrok import ngrok
+import uvicorn
+
+app = FastAPI()
+
+@app.get('/index')
+async def home():
+  return "Hello World"
+
+ngrok_tunnel = ngrok.connect(8000)
+print('Public URL:', ngrok_tunnel.public_url)
+nest_asyncio.apply()
+uvicorn.run(app, port=8000)
